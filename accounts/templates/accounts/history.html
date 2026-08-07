@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card p-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Master Transaction Logs</h3>
+        <!-- CSV Export Link keeping query parameters intact -->
+        <a href="?type={{ type|default:'' }}&date={{ date|default:'' }}&export=true" class="btn btn-info btn-sm">💾 Export Account Data to CSV</a>
+    </div>
+
+    <!-- Filter Form UI Matrix -->
+    <form method="GET" class="form-inline mb-4 gap-2">
+        <select name="type" class="form-control mr-2">
+            <option value="">-- All Types --</option>
+            <option value="Deposit" {% if type == 'Deposit' %}selected{% endif %}>Deposit Only</option>
+            <option value="Withdrawal" {% if type == 'Withdrawal' %}selected{% endif %}>Withdrawal Only</option>
+        </select>
+        <input type="date" name="date" class="form-control mr-2" value="{{ date|default:'' }}">
+        <button type="submit" class="btn btn-primary">Apply Filters</button>
+        <a href="{% url 'history' %}" class="btn btn-secondary ml-2">Reset</a>
+    </form>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Transaction Context Type</th>
+                <th>Amount Change</th>
+                <th>Execution Timestamp</th>
+                <th>Result Balance Post-Run</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for txn in page_obj %}
+            <tr>
+                <td><span class="badge {% if txn.transaction_type == 'Deposit' %}badge-success{% else %}badge-danger{% endif %}">{{ txn.transaction_type }}</span></td>
+                <td>${{ txn.amount }}</td>
+                <td>{{ txn.timestamp }}</td>
+                <td>${{ txn.balance_after }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4" class="text-center text-muted">No historical transactions fulfill search constraints.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Pagination Interface Blocks -->
+    <nav>
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page=1{% if type %}&type={{ type }}{% endif %}{% if date %}&date={{ date }}{% endif %}">&laquo; First</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if type %}&type={{ type }}{% endif %}{% if date %}&date={{ date }}{% endif %}">Previous</a></li>
+            {% endif %}
+
+            <li class="page-item disabled"><span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
+
+            {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{% if type %}&type={{ type }}{% endif %}{% if date %}&date={{ date }}{% endif %}">Next</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if type %}&type={{ type }}{% endif %}{% if date %}&date={{ date }}{% endif %}">Last &raquo;</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endblock %}

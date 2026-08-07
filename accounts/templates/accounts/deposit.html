@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card p-4 shadow-sm">
+            <h3 class="mb-3 text-center text-success">Secure Cash Deposit</h3>
+            <div class="alert alert-info py-2 small text-center">
+                Funds will clear instantly into your verified ledger account.
+            </div>
+            <form method="POST">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                <button type="submit" class="btn btn-success btn-block">Execute Deposit Transaction</button>
+            </form>
+            <div class="text-center mt-3">
+                <a href="{% url 'dashboard' %}" class="btn btn-sm btn-link text-secondary">Cancel and Return to Dashboard</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
