@@ -112,5 +112,5 @@ bank_project/
 
 ```bash
 python manage.py populate_bank_data
-Log into your app using the username: testuser   and   password: Password123!
 ```
+Log into your app using the username: testuser   and   password: Password123!
