@@ -106,3 +106,11 @@ bank_project/
 3.  **Main Account Dashboard & Charts:** `docs/screenshots/Dashboard Screenshot 2026-08-07 220450.png`
 4.  **Transaction Processing (Deposit/Withdrawal Forms):** `docs/screenshots/Deposit Screenshot 2026-08-07 220632.png`
 5.  **Historical Ledger (With Pagination, Filtering & CSV Export):** `docs/screenshots/Transaction History Screenshot 2026-08-07 220759.png`
+
+
+## To populate sample Bank data, run the following command
+
+```bash
+python manage.py populate_bank_data
+Log into your app using the username: testuser   and   password: Password123!
+```
